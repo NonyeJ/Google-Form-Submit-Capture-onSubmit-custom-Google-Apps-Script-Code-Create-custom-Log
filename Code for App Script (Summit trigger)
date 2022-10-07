@@ -1,0 +1,31 @@
+Form Submit custom triggers and logs
+Google Form Auto respond and custom Logger
+function mySubmit(e) {
+Logger.log(JSON.stringify(e));
+addLog(e.namedValues);
+const email = Session.getActiveUser().getEmail();
+const html = JSON.stringify(e.namedValues);
+if(e.namedValues['Email Address'][0] != null){
+MailApp.sendEmail({
+to:e.namedValues['Email Address'][0],
+subject:'Thank You',
+htmlBody:html
+});
+}
+MailApp.sendEmail({
+to:email,
+subject:'Form Submit',
+htmlBody:html
+});
+ 
+}
+function addLog(data){
+const ss =
+SpreadsheetApp.getActiveSpreadsheet().getSheetByName(
+'log');
+//ss.appendRow([JSON.stringify(data)]);
+ss.appendRow([data['Number'][0],data['Email
+Address'][0],data['Timestamp'][0]]);
+}
+ 
+2
